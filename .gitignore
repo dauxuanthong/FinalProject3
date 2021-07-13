@@ -1,0 +1,30 @@
+#final-project3
+final-project3/node_modules
+final-project3/.vscode
+final-project3/.env
+final-project3/.pnp
+final-project3/.pnp.js
+
+# testing
+final-project3/coverage
+
+# production
+final-project3/build
+
+# misc
+final-project3/.DS_Store
+final-project3/.env.local
+final-project3/.env.development.local
+final-project3/.env.test.local
+final-project3/.env.production.local
+
+final-project3/npm-debug.log*
+final-project3/yarn-debug.log*
+final-project3/yarn-error.log*
+
+
+
+#restApiFinal3
+restApiFinal3/node_modules
+restApiFinal3/.vscode
+restApiFinal3/src/.env
