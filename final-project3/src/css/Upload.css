@@ -1,0 +1,179 @@
+.upload-form {
+  width: 750px;
+  height: auto;
+  background-color: aqua;
+  padding: 50px 50px 50px 50px;
+  border: 1px solid;
+  border-radius: 5px;
+}
+
+/* *********TEXT AREA********** */
+.text-area {
+  background-color: antiquewhite;
+  width: 100%;
+  height: auto;
+  border: 2px solid;
+  border-radius: 10px;
+  padding: 20px 0 20px 0;
+  margin-bottom: 10px;
+}
+
+.item {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  width: 650px;
+  height: 30px;
+  margin-bottom: 35px;
+}
+
+.item span {
+  margin-top: 4px;
+}
+
+.item div {
+  float: right;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin-right: 180px;
+  margin-left: 10px;
+}
+.item div input{
+  width: 290px;
+}
+.text-item-message{
+  font-size: 14px;
+  color: red;
+}
+/* remove arrow input number */
+.price::-webkit-outer-spin-button,
+.price::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.description {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.tox {
+  width: 585px;
+}
+.tox-tinymce {
+  border-radius: 5px;
+}
+.description-message{
+  margin-top: 5px;
+  font-size: 14px;
+  color: red;
+}
+
+/*_____________TEXT AREA______________*/
+
+
+
+
+/***************IMG AREA****************/
+/* main img */
+.img-area {
+  background-color: antiquewhite;
+  width: 100%;
+  height: auto;
+  border: 2px solid;
+  border-radius: 10px;
+  padding: 0 0 0 0;
+}
+
+.main-img {
+  border-radius: 10px;
+  background-color: yellow;
+  position: block;
+  width: 100%;
+  height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0 0 0;
+}
+
+.slide-button {
+  background-color: Transparent;
+  background-repeat:no-repeat;
+  font-size: 25px;
+  border: none;
+  width: 40px;
+  height: 40px;
+  opacity: 0.4;
+}
+
+.delete-button {
+  background-color: Transparent;
+  background-repeat:no-repeat;
+  border: none;
+  position: absolute;
+  font-size: 20px;
+  left: 617px;
+  width: 40px;
+  height: 40px;
+  opacity: 0.4;
+}
+.delete-button:hover,
+.slide-button:hover{
+  opacity: 1;
+}
+
+.main-img-background {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* border: solid 1px; */
+  height: 100%;
+  width: 90%;
+}
+.main-img img {
+  object-fit: cover;
+  height: 95%;
+  max-width: 90%;
+}
+
+/* sub img */
+.sub-img {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: solid 1px;
+  border-radius: 5px;
+  width: 100%;
+  height: 150px;
+  padding: 0 0 0 0;
+}
+.sub-img-background {
+  border: solid 1px;
+  width: 90%;
+  height: 150px;
+}
+.sub-img img {
+  object-fit: cover;
+  width: 100px;
+  height: 100px;
+  margin: 25px 15px 25px 15px;
+}
+
+/* add img */
+.add-file {
+  width: 100%;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.add-file input::file-selector-button {
+  width: 50%;
+  height: 50px;
+  border: 2px solid;
+}
+/* __________________________________ */

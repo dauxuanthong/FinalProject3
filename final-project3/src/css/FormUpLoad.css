@@ -1,4 +1,4 @@
-.illustration {
+/* .illustration {
   display: flex;
   flex-direction: column;
   background-color: aquamarine;
@@ -131,6 +131,8 @@
   padding-left: 30px;
 }
 
-
-
-
+.drop-zone{
+  height: 45px;
+  width: 300px;
+  border: dashed; 
+} */

@@ -58,13 +58,13 @@ function FormUpLoad(props) {
     post();
   };
 
-  console.log("OUT: ",imgArr);
+  console.log("OUT: ", imgArr);
   return (
     <div className="illustration">
       <form encType="multipart/form-data" onSubmit={onSubmit}>
         <div className="img-area">
           <div className="main-img">
-            <img src={img.profileImg}/>
+            <img src={img.profileImg} />
           </div>
           {/* <div className="sub-img">
             {imgArr?.map((img)=>(
@@ -94,12 +94,7 @@ function FormUpLoad(props) {
           <div className="info-auction">
             <div className="item-auction">
               <span>Start at</span>
-              <input
-                required
-                type="datetime-local"
-                name="startAt"
-                onChange={timeOnChange}
-              />
+              <input required type="datetime-local" name="startAt" onChange={timeOnChange} />
             </div>
             <div className="item-auction">
               <span>Starting price</span>

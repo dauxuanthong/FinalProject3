@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Cookies from 'js-cookie';
 import userAPI from "../../API/userAPI";
 function Logout(props) {
@@ -9,7 +9,7 @@ function Logout(props) {
       const user = JSON.parse(localStorage.getItem("user"));
       console.log(user);
       const response = await userAPI.logOut(user);
-      if(response == "OK"){
+      if(response === "OK"){
         //remove cookie
         Cookies.remove("refreshToken");
         //clear session

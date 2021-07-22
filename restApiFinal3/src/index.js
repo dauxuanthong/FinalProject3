@@ -18,6 +18,8 @@ app.use(session({
   cookie: {}
 }))
 
+global.__basedir = __dirname;
+
 // res.body
 app.use(
   express.urlencoded({

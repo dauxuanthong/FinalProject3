@@ -7,6 +7,9 @@ import Login from "./Components/Auth/Login"
 import Register from "./Components/Auth/Register"
 import FormUpLoad from "./Components/Post/FormUpLoad";
 import "bootstrap/dist/css/bootstrap.min.css";
+import TestForm from "./Components/Post/TestForm"
+import AnotherTest from "./Components/Post/AnotherTest"
+import Upload from "./Components/Post/Upload";
 
 function App() {
   //STATE
@@ -42,6 +45,9 @@ function App() {
       <Route exact path="/login" component={Login} />
       <Route exact path="/register" component={Register} />
       <Route exact path="/upload" component={FormUpLoad} />
+      <Route exact path="/testUpload" component={TestForm} />
+      <Route exact path="/test2" component={AnotherTest} />
+      <Route exact path="/test3" component={Upload} />
     </Router>
   );
 }

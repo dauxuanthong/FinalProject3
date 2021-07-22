@@ -1,5 +1,6 @@
 const userRouter = require("./userRouter");
 const auth = require("./auth");
+const file = require("./file");
 
 function router(app) {
     // /user

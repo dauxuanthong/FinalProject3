@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
 import postAPI from "../../API/postAPI";
 
-function testFrom(props) {
+function TestForm(props) {
   //STATE
   const [selectedFiles, setSelectedFiles] = useState(undefined);
   const [currentFile, setCurrentFile] = useState(undefined);
@@ -15,7 +14,8 @@ function testFrom(props) {
       .then((response)=>{
         setFileInfos(response);
       })
-  },[])
+  },[]);
+
   //FUNCTION
   const Upload = async (file, onUploadProgress) => {
     let formData = new FormData();
@@ -28,6 +28,7 @@ function testFrom(props) {
     setSelectedFiles(e.target.files);
   };
   const handleUpload = (e) => {
+    console.log(selectedFiles);
     //get file and setup basic state
     let currentFile = e.selectedFiles[0];
     setProgress(0);
@@ -87,11 +88,11 @@ function testFrom(props) {
               <li className="list-group-item" key={index}>
                 <a href={file.url}>{file.name}</a>
               </li>
-            ))}
+          ))}
         </ul>
       </div>
     </div>
   )
 }
 
-export default testFrom;
+export default TestForm;
