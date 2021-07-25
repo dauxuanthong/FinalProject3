@@ -14,7 +14,7 @@ function AnotherTest(props) {
   const { getRootProps, getInputProps } = useDropzone();
   return (
     <div>
-      <input type="file" name="file" onChange={changeHandler} />
+      <input type="file" name="file" onChange={changeHandler}/>
       <div>
         <button onClick={handleSubmission}>Submit</button>
       </div>

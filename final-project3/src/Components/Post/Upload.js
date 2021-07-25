@@ -6,6 +6,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { Editor } from "@tinymce/tinymce-react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import postAPI from "../../API/postAPI";
 function Upload(props) {
   //STATE
   //***data***
@@ -13,8 +14,6 @@ function Upload(props) {
   const [files, setFiles] = useState([]);
   const [currentFile, setCurrentFile] = useState({});
   const [imgURL, setImgURL] = useState([]);
-  const [currentFileURL, setCurrentFileURL] = useState({});
-  const [imgKey, setImgKey] = useState(0);
   //text state
   const [productName, setProductName] = useState("");
   const [productType, setProductType] = useState("");
@@ -24,7 +23,6 @@ function Upload(props) {
 
   //***Event data***
   const [show, setShow] = useState(1);
-  const [mode, setMode] = useState("ENABLE");
   const [filesErr, setFilesErr] = useState(false);
   const [productNameErr, setProductNameErr] = useState(false);
   const [productTypeErr, setProductTypeErr] = useState(false);
@@ -45,30 +43,76 @@ function Upload(props) {
   }, [imgURL]);
 
   //FUNCTION
-  const post = () => {
-    const data = {
-      img: files,
-      productName: productName,
-      productType: productType,
-      startPrice: startPrice,
-      auctionAt: auctionAt,
-      description: description,
-    };
-    console.log({ data });
+  const post = async () => {
+    if (
+      files.length == 0 ||
+      !productName ||
+      !productType ||
+      !startPrice ||
+      !auctionAt ||
+      !description
+    ) {
+      console.log("POST FALSE");
+    } else {
+      let formData = new FormData();
+      const filesArr = [...files];
+      filesArr.map(item=>{
+        formData.append("file", item);
+      })
+      const urlFilesRes =  await postAPI.imgUpload(formData);
+      console.log(urlFilesRes);
+      // const data = {
+      //   img: files,
+      //   productName: productName,
+      //   productType: productType,
+      //   startPrice: startPrice,
+      //   auctionAt: auctionAt,
+      //   description: description,
+      // };
+      // console.log({ data });
+      // const formData = new FormData();
+      // formData.append("files", data.img[0]);
+
+      // try {
+      //   // console.log("test", data.img[0]);
+      //   await postAPI.test(formData);
+      //   // await postAPI.upload(data);
+      //   console.log("Already post successfully");
+      // } catch (error) {
+      //   console.log("ERROR: Can't post");
+      // }
+    }
   };
 
   const nullValidate = () => {
-    setMode("ENABLE");
-    !files && setMode("DISABLE") && setFilesErr(true);
-    !productName && setMode("DISABLE") && setProductNameErr(true);
-    !productType && setMode("DISABLE") && setProductTypeErr(true);
-    !startPrice && setMode("DISABLE") && setStartPriceErr(true);
-    !auctionAt && setMode("DISABLE") && setAuctionAtErr(true);
-    !description && setMode("DISABLE") && setDescriptionErr(true);
+    if (files.length === 0) {
+      setFilesErr(true);
+      setSubmitErr(true);
+    }
+    if (!productName) {
+      setProductNameErr(true);
+      setSubmitErr(true);
+    }
+    if (!productType) {
+      setProductTypeErr(true);
+      setSubmitErr(true);
+    }
+    if (!startPrice) {
+      setStartPriceErr(true);
+      setSubmitErr(true);
+    }
+    if (!auctionAt) {
+      setAuctionAtErr(true);
+      setSubmitErr(true);
+    }
+    if (!description) {
+      setDescriptionErr(true);
+      setSubmitErr(true);
+    }
   };
 
   const resetStatus = () => {
-    setMode("ENABLE");
+    // setMode("ENABLE");
     setFilesErr(false);
     setProductNameErr(false);
     setProductTypeErr(false);
@@ -95,33 +139,28 @@ function Upload(props) {
     setDescription(value);
   };
   //file
-  // const handleFile = (e) => {
-  //   setCurrentFile(e.target.files[0]);
-  //   const arr = [...files];
-  //   arr.push(e.target.files[0]);
-  //   setFiles(arr);
-  //   const reader = new FileReader();
-  //   reader.onload = () => {
-  //     if (reader.readyState === 2) {
-  //       let arr2 = [...imgURL];
-  //       arr2.push(reader.result);
-  //       setImgURL(arr2);
-  //     }
-  //   };
-  //   reader.readAsDataURL(e.target.files[0]);
-  // };
-
   const handleFile = (e) => {
     const newFile = e.target.files[0];
-    setFiles((prevArr) => [...prevArr, newFile]);
-    const reader = new FileReader();
-    reader.onload = () => {
-      if (reader.readyState === 2) {
-        setImgURL((prevArr) => [...prevArr, reader.result]);
-        setCurrentFile(reader.result);
-      }
-    };
-    reader.readAsDataURL(e.target.files[0]);
+    //check file is exited
+    const filesArr = [...files];
+    const exitFileName = filesArr.find((item) => item?.name === newFile.name);
+    const exitFileSize = filesArr.find((item) => item?.size === newFile.size);
+    if (!exitFileName && !exitFileSize) {
+      setFiles((prevArr) => [...prevArr, newFile]);
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (reader.readyState === 2) {
+          setImgURL((prevArr) => [...prevArr, reader.result]);
+          setCurrentFile(reader.result);
+        }
+      };
+      reader.readAsDataURL(e.target.files[0]);
+    } else {
+      console.log("FILES: ", files);
+      console.log("File already existed");
+    }
+    //reset value of target
+    e.target.value = "";
   };
 
   //choose img
@@ -129,11 +168,44 @@ function Upload(props) {
     setCurrentFile(e.target.src);
   };
 
+  //choose remove img
+  const removeImg = () => {
+    let imgURLArr = [...imgURL];
+    let filesArr = [...files];
+    const currentIndex = imgURLArr.indexOf(currentFile);
+    //remove URL arr
+    imgURLArr.splice(currentIndex, 1);
+    setImgURL(imgURLArr);
+    //remove Files arr
+    filesArr.splice(currentIndex, 1);
+    setFiles(filesArr);
+    //change current Img
+    currentIndex === 0
+      ? setCurrentFile(imgURLArr[imgURLArr?.length - 1])
+      : setCurrentFile(imgURLArr[currentIndex - 1]);
+  };
+
+  const leftSwitch = () => {
+    const imgURLArr = [...imgURL];
+    const currentIndex = imgURLArr.indexOf(currentFile);
+    currentIndex === 0
+      ? setCurrentFile(imgURLArr[imgURLArr?.length - 1])
+      : setCurrentFile(imgURLArr[currentIndex - 1]);
+  };
+
+  const rightSwitch = () => {
+    const imgURLArr = [...imgURL];
+    const currentIndex = imgURLArr.indexOf(currentFile);
+    currentIndex === imgURLArr.length - 1
+      ? setCurrentFile(imgURLArr[0])
+      : setCurrentFile(imgURLArr[currentIndex + 1]);
+  };
+
   const onSubmit = (e) => {
     e.preventDefault();
     resetStatus();
     nullValidate();
-    mode === "ENABLE" ? post() : setSubmitErr(true);
+    post();
   };
 
   //SLIDE
@@ -157,9 +229,11 @@ function Upload(props) {
             <span>Product name</span>
             <div>
               <input type="text" onChange={productNameOnChange}></input>
-              <span className="text-item-message">
-                Please enter your product name and try again!
-              </span>
+              {productNameErr === false ? null : (
+                <span className="text-item-message">
+                  Please enter your product name and try again!
+                </span>
+              )}
             </div>
           </div>
 
@@ -167,9 +241,11 @@ function Upload(props) {
             <span>Product type</span>
             <div>
               <input type="text" onChange={productTypeOnChange}></input>
-              <span className="text-item-message">
-                Please enter your product type and try again!
-              </span>
+              {productTypeErr === false ? null : (
+                <span className="text-item-message">
+                  Please enter your product type and try again!
+                </span>
+              )}
             </div>
           </div>
 
@@ -177,9 +253,11 @@ function Upload(props) {
             <span>Start price</span>
             <div>
               <input className="price" type="number" onChange={startPriceOnChange}></input>
-              <span className="text-item-message">
-                Please enter your product price and try again!
-              </span>
+              {startPriceErr === false ? null : (
+                <span className="text-item-message">
+                  Please enter your product price and try again!
+                </span>
+              )}
             </div>
           </div>
 
@@ -187,9 +265,11 @@ function Upload(props) {
             <span>Auction at</span>
             <div>
               <input type="datetime-local" onChange={auctionAtOnChange}></input>
-              <span className="text-item-message">
-                Please enter the auction time and try again!
-              </span>
+              {auctionAtErr === false ? null : (
+                <span className="text-item-message">
+                  Please enter the auction time and try again!
+                </span>
+              )}
             </div>
           </div>
 
@@ -217,22 +297,26 @@ function Upload(props) {
                 content_style: "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
               }}
             />
-            <span className="description-message">Please describe your product and try again!</span>
+            {descriptionErr === false ? null : (
+              <span className="description-message">
+                Please describe your product and try again!
+              </span>
+            )}
           </div>
         </div>
 
         <div className="img-area">
-          <button className="delete-button">
+          <button className="delete-button" type="button" onClick={removeImg}>
             <RiDeleteBin6Line />
           </button>
           <div className="main-img">
-            <button className="slide-button">
+            <button className="slide-button" type="button" onClick={leftSwitch}>
               <FaArrowLeft />
             </button>
             <div className="main-img-background">
               <img src={currentFile} />
             </div>
-            <button className="slide-button">
+            <button className="slide-button" type="button" onClick={rightSwitch}>
               <FaArrowRight />
             </button>
           </div>
@@ -252,11 +336,17 @@ function Upload(props) {
           </div>
           <div className="add-file">
             <input type="file" onChange={handleFile}></input>
+            {filesErr === false ? null : (
+              <span>Please provide some images about your product and try again!</span>
+            )}
           </div>
         </div>
-        <span className="">Please provide some images about your product and try again</span>
-        <button type="submit">Post</button>
-        <span className="post-message">There are some fields need to fill before posting</span>
+        <div className="submit">
+          <button type="submit">Post</button>
+          {submitErr === false ? null : (
+            <span>There are some fields need to fill before posting!</span>
+          )}
+        </div>
       </form>
     </div>
   );
